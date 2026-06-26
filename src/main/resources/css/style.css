@@ -1,0 +1,310 @@
+/*
+ * ============================================================
+ * Key-Store 全局样式表（现代化 UI）
+ * ============================================================
+ * 主色: #2563eb (确认/保存)  |  危险色: #dc2626 (取消/关闭)
+ * ============================================================
+ */
+
+/* ==================== 全局 ==================== */
+.root {
+    -fx-font-family: "Microsoft YaHei UI", "Segoe UI", "PingFang SC", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #f1f5f9;
+}
+
+.label-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+
+.label-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748b;
+}
+
+.label-section {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #334155;
+}
+
+/* ==================== 按钮基础 ==================== */
+.button {
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-padding: 8 18;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+    -fx-background-insets: 0;
+    -fx-border-width: 0;
+}
+
+.button:hover {
+    -fx-opacity: 0.92;
+}
+
+.button:pressed {
+    -fx-opacity: 0.85;
+}
+
+/* 确认 / 保存 / 主操作 — 蓝色 */
+.btn-primary {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+/* 取消 / 关闭 / 危险操作 — 红色 */
+.btn-danger {
+    -fx-background-color: #dc2626;
+    -fx-text-fill: white;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #b91c1c;
+}
+
+/* 次要操作 — 浅灰 */
+.btn-secondary {
+    -fx-background-color: #e2e8f0;
+    -fx-text-fill: #334155;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #cbd5e1;
+}
+
+/* ==================== 登录页 ==================== */
+.login-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16px;
+    -fx-padding: 40;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.08), 24, 0, 0, 8);
+}
+
+.login-brand {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+
+.login-action {
+    -fx-pref-height: 42px;
+    -fx-font-size: 14px;
+}
+
+/* ==================== 主界面 ==================== */
+.toolbar {
+    -fx-background-color: white;
+    -fx-padding: 10 20;
+    -fx-border-color: transparent transparent #e2e8f0 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.toolbar-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
+
+.sidebar {
+    -fx-background-color: white;
+    -fx-padding: 12;
+    -fx-border-color: transparent #e2e8f0 transparent transparent;
+    -fx-border-width: 0 1 0 0;
+}
+
+.content-panel {
+    -fx-padding: 16;
+    -fx-background-color: #f8fafc;
+}
+
+.status-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #94a3b8;
+}
+
+/* ==================== 表单 / 弹窗内容 ==================== */
+.form-panel {
+    -fx-padding: 20;
+    -fx-background-color: white;
+}
+
+.dialog-footer {
+    -fx-padding: 12 0 0 0;
+    -fx-border-color: #e2e8f0 transparent transparent transparent;
+    -fx-border-width: 1 0 0 0;
+}
+
+.form-action-btn {
+    -fx-min-width: 88px;
+    -fx-pref-height: 36px;
+}
+
+/* ==================== 输入控件 ==================== */
+.text-field, .password-field, .combo-box, .date-picker, .text-area {
+    -fx-background-color: white;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 8 12;
+}
+
+.text-field:focused, .password-field:focused,
+.combo-box:focused, .date-picker:focused, .text-area:focused {
+    -fx-border-color: #2563eb;
+    -fx-border-width: 1.5px;
+}
+
+/* ==================== 表格 ==================== */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 10 10 0 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+    -fx-text-fill: #475569;
+    -fx-size: 36px;
+}
+
+.table-view .table-row-cell {
+    -fx-border-color: transparent transparent #f1f5f9 transparent;
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: #eff6ff;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+}
+
+/* ==================== 列表 ==================== */
+.list-view {
+    -fx-background-color: white;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.list-view .list-cell {
+    -fx-padding: 8 12;
+}
+
+.list-view .list-cell:hover {
+    -fx-background-color: #eff6ff;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+}
+
+/* ==================== 选项卡 ==================== */
+.tab-pane {
+    -fx-background-color: white;
+}
+
+.tab-pane .tab-header-area {
+    -fx-padding: 8 8 0 8;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #e2e8f0;
+    -fx-background-radius: 8 8 0 0;
+    -fx-padding: 8 16;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: white;
+    -fx-font-weight: bold;
+}
+
+.tab-pane .tab-content-area {
+    -fx-background-color: white;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 0 0 10 10;
+}
+
+/* ==================== 系统弹窗 (Alert / Dialog) ==================== */
+.dialog-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 12px;
+}
+
+.dialog-pane .button-bar {
+    -fx-padding: 12 20 20 20;
+}
+
+.dialog-pane .button-bar .container {
+    -fx-spacing: 10;
+}
+
+/* Alert 确认按钮 — 蓝色 */
+.dialog-pane .button:default {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 8 20;
+}
+
+.dialog-pane .button:default:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+/* Alert 取消按钮 — 红色 */
+.dialog-pane .button.cancel-button {
+    -fx-background-color: #dc2626;
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 8 20;
+}
+
+.dialog-pane .button.cancel-button:hover {
+    -fx-background-color: #b91c1c;
+}
+
+/* 隐藏仅用于启用标题栏关闭的占位按钮栏 */
+.dialog-pane .button-bar-hidden {
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+    -fx-max-height: 0;
+    -fx-padding: 0;
+}
+
+/* ==================== 菜单 / 滚动条 ==================== */
+.context-menu {
+    -fx-background-color: white;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.12), 12, 0, 0, 4);
+}
+
+.menu-item:hover {
+    -fx-background-color: #eff6ff;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 6px;
+}
+
+.separator .line {
+    -fx-border-color: #e2e8f0;
+}

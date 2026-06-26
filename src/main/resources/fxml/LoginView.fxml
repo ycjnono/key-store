@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    ============================================================
+    登录界面 (LoginView)
+    ============================================================
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane fx:id="rootPane"
+           xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.changjiang.keystore.ui.controller.LoginController"
+           prefWidth="500" prefHeight="440"
+           style="-fx-background-color: #e2e8f0;"
+           stylesheets="@../css/style.css">
+
+    <VBox alignment="CENTER" spacing="20" styleClass="login-card" maxWidth="360">
+        <padding>
+            <Insets top="36" right="36" bottom="36" left="36"/>
+        </padding>
+
+        <Label text="🔑 Key-Store" styleClass="login-brand"/>
+        <Label text="账户密码管理工具" styleClass="label-subtitle"/>
+
+        <Separator prefWidth="280"/>
+
+        <Label fx:id="titleLabel" text="解锁 Key-Store" styleClass="label-title"/>
+        <Label fx:id="messageLabel" text="请输入主密码解锁客户端" styleClass="label-subtitle"/>
+
+        <VBox spacing="10" prefWidth="280">
+            <PasswordField fx:id="passwordField" promptText="主密码" prefHeight="40"/>
+
+            <StackPane fx:id="confirmPane" visible="false">
+                <PasswordField fx:id="confirmPasswordField" promptText="确认密码" prefHeight="40"/>
+            </StackPane>
+
+            <Label fx:id="strengthLabel" styleClass="label-subtitle"/>
+        </VBox>
+
+        <Button fx:id="actionButton" text="解锁" onAction="#onActionButtonClicked"
+                styleClass="btn-primary login-action" maxWidth="Infinity"/>
+    </VBox>
+</StackPane>

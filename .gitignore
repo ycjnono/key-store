@@ -1,0 +1,28 @@
+# 构建输出
+target/
+out/
+build/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.classpath
+*.project
+.settings/
+
+# 本地数据与日志（含用户密码库，禁止提交）
+data/
+logs/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+*.log
+
+# 打包临时文件
+*.exe
+*.msi
+dist/
