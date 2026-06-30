@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <title>Key-Store - 登录</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page">
+  <div class="login-card">
+    <div class="login-brand">🔑 Key-Store</div>
+    <div class="label-subtitle" style="text-align:center">账户密码管理工具</div>
+    <hr style="border:none;border-top:1px solid #e2e8f0;margin:4px 0">
+
+    <div class="label-title" id="titleLabel">解锁 Key-Store</div>
+    <div class="label-subtitle" id="hintLabel">请输入主密码解锁客户端</div>
+
+    <input type="password" id="password" placeholder="主密码" autocomplete="off">
+    <div id="confirmWrap" class="hidden">
+      <input type="password" id="confirmPassword" placeholder="确认密码" autocomplete="off">
+      <div id="strengthLabel" class="label-subtitle" style="margin-top:8px"></div>
+    </div>
+
+    <div class="message-error" id="message"></div>
+    <button id="actionBtn" class="btn-primary login-action">解锁</button>
+  </div>
+  <script src="js/login.js"></script>
+</body>
+</html>

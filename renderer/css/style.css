@@ -1,0 +1,239 @@
+/* Key-Store Electron 全局样式 */
+:root {
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --secondary: #e2e8f0;
+  --secondary-hover: #cbd5e1;
+  --bg: #f1f5f9;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --radius: 8px;
+  --font: "Microsoft YaHei UI", "Segoe UI", "PingFang SC", sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+button {
+  border: none;
+  border-radius: var(--radius);
+  padding: 8px 18px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+button:hover { opacity: 0.92; }
+button:active { opacity: 0.85; }
+
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-hover); }
+
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { background: var(--danger-hover); }
+
+.btn-secondary { background: var(--secondary); color: #334155; }
+.btn-secondary:hover { background: var(--secondary-hover); }
+
+input, select, textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 13px;
+  width: 100%;
+  background: #fff;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.label-title { font-size: 18px; font-weight: bold; color: var(--text); }
+.label-subtitle { font-size: 13px; color: var(--text-muted); }
+.label-section { font-size: 14px; font-weight: bold; color: #334155; }
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e2e8f0;
+}
+
+.login-card {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-brand { font-size: 28px; font-weight: bold; text-align: center; }
+.login-action { width: 100%; padding: 12px; font-size: 14px; }
+.message-error { color: var(--danger); font-size: 13px; min-height: 20px; }
+
+.app-layout { display: flex; flex-direction: column; height: 100vh; }
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.toolbar-title { font-size: 17px; font-weight: bold; flex: 1; }
+
+.main-body { display: flex; flex: 1; overflow: hidden; }
+
+.sidebar {
+  width: 200px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.category-list {
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  list-style: none;
+  background: #fff;
+}
+
+.category-list li {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.category-list li:hover { background: #eff6ff; }
+.category-list li.active { background: var(--primary); color: #fff; }
+
+.content {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.search-row { display: flex; align-items: center; gap: 10px; }
+.search-row input { flex: 1; }
+
+.table-wrap { flex: 1; overflow: auto; border: 1px solid var(--border); border-radius: 10px; background: #fff; }
+
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table thead { background: #f8fafc; position: sticky; top: 0; }
+.data-table th, .data-table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+.data-table tbody tr:hover { background: #eff6ff; cursor: pointer; }
+
+.status-bar { font-size: 12px; color: #94a3b8; }
+.bottom-bar { display: flex; align-items: center; gap: 10px; }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 520px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.modal-wide { max-width: 640px; }
+.modal h2 { margin-bottom: 16px; font-size: 18px; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 12px 14px;
+  align-items: center;
+}
+
+.form-grid .full-row { grid-column: 1 / -1; }
+
+.password-field {
+  position: relative;
+  width: 100%;
+}
+
+.password-field input {
+  padding-right: 52px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  min-width: 44px;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--secondary);
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  background: var(--border);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+.tab-btn { padding: 8px 16px; background: var(--secondary); border-radius: 8px 8px 0 0; }
+.tab-btn.active { background: #fff; font-weight: bold; border: 1px solid var(--border); border-bottom: none; }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.hidden { display: none !important; }

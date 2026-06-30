@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <title>Key-Store - 主界面</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <header class="toolbar">
+      <span class="toolbar-title">🔑 Key-Store</span>
+      <button class="btn-danger" id="btnLock">锁定</button>
+      <button class="btn-secondary" id="btnImportExport">导入/导出</button>
+      <button class="btn-danger" id="btnExit">退出</button>
+    </header>
+
+    <div class="main-body">
+      <aside class="sidebar">
+        <div class="label-section">分类</div>
+        <ul class="category-list" id="categoryList"></ul>
+        <button class="btn-secondary" id="btnCategories" style="width:100%">分类管理</button>
+      </aside>
+
+      <main class="content">
+        <div class="search-row">
+          <span class="label-section">搜索</span>
+          <input type="text" id="searchInput" placeholder="输入账户名称或账号...">
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>名称</th><th>地址</th><th>账号</th></tr>
+            </thead>
+            <tbody id="accountTable"></tbody>
+          </table>
+        </div>
+
+        <div class="bottom-bar">
+          <button class="btn-primary" id="btnAddAccount">＋ 新增账户</button>
+          <span class="status-bar" id="statusBar"></span>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- 账户表单 -->
+  <div class="modal-overlay" id="accountModal">
+    <div class="modal">
+      <h2 id="accountModalTitle">新增账户</h2>
+      <div class="form-grid">
+        <label>分类</label>
+        <select id="accCategory"></select>
+        <label>名称</label>
+        <input id="accName" placeholder="账户名称">
+        <label>地址</label>
+        <input id="accAddress" placeholder="URL / IP">
+        <label>端口</label>
+        <input id="accPort" placeholder="可选">
+        <label>账号</label>
+        <input id="accUsername">
+        <label>密码</label>
+        <div class="password-field">
+          <input type="text" id="accPassword" placeholder="必填" autocomplete="off">
+          <button type="button" class="password-toggle" id="accPasswordToggle">显示</button>
+        </div>
+        <label>有效期从</label>
+        <input type="date" id="accValidFrom">
+        <label>有效期至</label>
+        <input type="date" id="accValidTo">
+        <label>备注</label>
+        <textarea id="accNotes" rows="3" class="full-row" style="grid-column:2"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" id="accSave">保存</button>
+        <button class="btn-danger" id="accClose">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分类管理 -->
+  <div class="modal-overlay" id="categoryModal">
+    <div class="modal modal-wide">
+      <h2>分类管理</h2>
+      <div class="table-wrap" style="max-height:240px;margin-bottom:12px">
+        <table class="data-table">
+          <thead><tr><th>分类名称</th><th>账户数</th><th>操作</th></tr></thead>
+          <tbody id="categoryTable"></tbody>
+        </table>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <input id="newCategoryName" placeholder="新分类名称" style="flex:1">
+        <button class="btn-primary" id="btnAddCategory">新增</button>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-danger" id="categoryClose">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 导入导出 -->
+  <div class="modal-overlay" id="ioModal">
+    <div class="modal modal-wide">
+      <h2>导入 / 导出</h2>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="export">导出</button>
+        <button class="tab-btn" data-tab="import">导入</button>
+      </div>
+      <div class="tab-panel active" id="tab-export">
+        <div class="form-grid">
+          <label>导出范围</label>
+          <select id="exportScope">
+            <option value="all">全部账户</option>
+            <option value="category">按分类导出</option>
+          </select>
+        </div>
+        <select id="exportCategories" multiple class="hidden" style="height:100px;margin:12px 0"></select>
+        <div style="display:flex;gap:8px;margin:12px 0">
+          <input id="exportPath" readonly placeholder="导出路径" style="flex:1">
+          <button class="btn-secondary" id="btnExportBrowse">浏览</button>
+        </div>
+        <button class="btn-primary" id="btnDoExport">导出</button>
+        <div id="exportStatus" class="label-subtitle" style="margin-top:8px"></div>
+      </div>
+      <div class="tab-panel" id="tab-import">
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <input id="importPath" readonly placeholder="导入文件" style="flex:1">
+          <button class="btn-secondary" id="btnImportBrowse">浏览</button>
+        </div>
+        <label class="label-section">导入模式</label>
+        <select id="importMode" style="margin:8px 0">
+          <option value="APPEND">追加导入（保留现有数据）</option>
+          <option value="OVERWRITE">覆盖导入（清空后恢复）</option>
+        </select>
+        <label class="label-section">源库主密码</label>
+        <input type="password" id="importSourcePassword" placeholder="与导出端相同的主密码" autocomplete="off" style="margin:8px 0">
+        <div class="label-subtitle" style="margin-bottom:8px">覆盖导入后会自动锁定，请用此密码重新登录</div>
+        <button class="btn-secondary" id="btnPreviewImport">预览</button>
+        <div id="importPreview" class="label-subtitle" style="margin:12px 0"></div>
+        <button class="btn-primary" id="btnDoImport">执行导入</button>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-danger" id="ioClose">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

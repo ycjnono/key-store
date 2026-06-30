@@ -1,0 +1,65 @@
+{
+  "name": "keystore",
+  "version": "1.0.1",
+  "description": "Key-Store 本地离线账户密码管理工具（JavaScript / Electron 版）",
+  "main": "electron/main.js",
+  "author": "Changjiang",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "prepare:icons": "node scripts/prepare-icons.js",
+    "clean:dist": "node scripts/clean-dist.js",
+    "prebuild": "node scripts/prepare-icons.js && node scripts/clean-dist.js",
+    "prebuild:dir": "node scripts/clean-dist.js",
+    "build": "node scripts/build-win.js",
+    "build:dir": "electron-builder --win --dir",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.7.0"
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.changjiang.keystore",
+    "productName": "Key-Store",
+    "copyright": "Copyright © 2025 Changjiang",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "icon": "build/icon.ico",
+    "files": [
+      "electron/**/*",
+      "app/**/*",
+      "renderer/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "signAndEditExecutable": true,
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "KeyStore-${version}-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Key-Store",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "deleteAppDataOnUninstall": false,
+      "include": "build/uninstaller.nsh",
+      "uninstallDisplayName": "Key-Store"
+    }
+  }
+}

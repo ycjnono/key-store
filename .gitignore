@@ -1,7 +1,10 @@
 # 构建输出
-target/
-out/
-build/
+node_modules/
+release/
+dist/
+.dist-stale-*/
+release-stale-*/
+dist-stale-*/
 
 # IDE
 .idea/
@@ -9,9 +12,6 @@ build/
 *.ipr
 *.iws
 .vscode/
-*.classpath
-*.project
-.settings/
 
 # 本地数据与日志（含用户密码库，禁止提交）
 data/
@@ -26,3 +26,8 @@ Thumbs.db
 *.exe
 *.msi
 dist/
+.dist-stale-*/
+
+# Python
+__pycache__/
+*.pyc

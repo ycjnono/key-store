@@ -1,0 +1,2 @@
+# Minimal user config - overrides global ~/.npmrc (broken taobao mirrors)
+registry=https://registry.npmmirror.com
