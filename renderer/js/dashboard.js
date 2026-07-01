@@ -10,9 +10,32 @@
 
   const $ = (id) => document.getElementById(id);
 
+  const SESSION_LOCKED_HINT = '会话已锁定';
+
+  /** 是否会话锁定类错误 */
+  function isSessionLockedError(message) {
+    const msg = String(message || '');
+    return msg.includes(SESSION_LOCKED_HINT) || msg.includes('主密钥未就绪');
+  }
+
+  /** 未解锁时跳转登录页 */
+  async function redirectIfLocked() {
+    const res = await window.keystore.auth.isUnlocked();
+    if (!res.ok || !res.data) {
+      await window.keystore.nav.login();
+      return true;
+    }
+    return false;
+  }
+
   async function api(promise) {
     const res = await promise;
-    if (!res.ok) throw new Error(res.error);
+    if (!res.ok) {
+      if (isSessionLockedError(res.error)) {
+        await window.keystore.nav.login();
+      }
+      throw new Error(res.error);
+    }
     return res.data;
   }
 
@@ -152,7 +175,9 @@
         `【${a.name}】\n分类: ${cat?.name || ''}\n地址: ${displayAddress(a)}\n账号: ${a.username || '(空)'}\n密码: ${pwd || '(空)'}\n备注: ${a.notes || ''}`
       );
     } catch (err) {
-      alert(`无法读取账户详情：${err.message}\n若刚完成导入，请使用导出端的原主密码重新登录。`);
+      if (!isSessionLockedError(err.message)) {
+        alert(`无法读取账户详情：${err.message}\n若刚完成导入，请使用导出端的原主密码重新登录。`);
+      }
     }
   }
 
@@ -168,7 +193,9 @@
           const p = await api(window.keystore.account.decryptPassword(account.id));
           await window.keystore.clipboard.write(p || '');
         } catch (err) {
-          alert(`复制密码失败：${err.message}`);
+          if (!isSessionLockedError(err.message)) {
+            alert(`复制密码失败：${err.message}`);
+          }
         }
       }],
       ['编辑', () => openAccountForm(account.id)],
@@ -408,16 +435,17 @@
 
   // 初始化
   (async function init() {
-    const unlocked = await window.keystore.auth.isUnlocked();
-    if (!unlocked.ok || !unlocked.data) {
-      await window.keystore.nav.login();
-      return;
-    }
+    if (await redirectIfLocked()) return;
     await loadCategories();
     if (categories.length) {
       selectedCategoryId = categories[0].id;
       await loadCategories();
     }
     await loadAccounts();
+
+    // 从托盘恢复焦点时再次检查（页面未重载场景）
+    window.addEventListener('focus', () => {
+      redirectIfLocked();
+    });
   })();
 })();

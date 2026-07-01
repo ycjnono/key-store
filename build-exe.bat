@@ -68,6 +68,6 @@ if errorlevel 1 (
 echo.
 echo ============================================================
 echo   Build complete.
-echo   Output: release\KeyStore-1.0.1-Setup.exe
+echo   Output: release\KeyStore-1.0.2-Setup.exe
 echo ============================================================
 pause

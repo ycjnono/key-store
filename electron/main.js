@@ -102,7 +102,7 @@ function hideToTray() {
 }
 
 /**
- * 从托盘恢复并显示主窗口
+ * 从托盘恢复并显示主窗口；若已自动锁定则跳转登录页
  */
 function showMainWindow() {
     if (!mainWindow || mainWindow.isDestroyed()) {
@@ -114,6 +114,18 @@ function showMainWindow() {
     }
     mainWindow.show();
     mainWindow.focus();
+    if (!authService.isUnlocked()) {
+        navigateToLogin();
+    }
+}
+
+/**
+ * 加载登录页（会话锁定或未解锁时）
+ */
+function navigateToLogin() {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
+    }
 }
 
 /**
@@ -265,7 +277,7 @@ function registerIpc() {
 
     ipcMain.handle('app:getDbPath', () => getDbPath());
     ipcMain.handle('nav:login', () => {
-        mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
+        navigateToLogin();
         return true;
     });
     ipcMain.handle('nav:dashboard', () => {
@@ -290,6 +302,7 @@ app.whenReady().then(() => {
         app.setAppUserModelId(APP_ID);
     }
     registerIpc();
+    authService.onLocked(navigateToLogin);
     createTray();
     createWindow();
 });

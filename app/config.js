@@ -9,6 +9,8 @@ const { app } = require('electron');
 const PBKDF2_ITERATIONS = 100_000;
 const VERIFICATION_PLAINTEXT = 'KEYSTORE_VERIFY';
 const AUTO_LOCK_MINUTES = 5;
+/** 主密钥已清除（自动锁定）时提示用户重新登录 */
+const SESSION_LOCKED_MESSAGE = '会话已锁定，请重新输入主密码';
 
 /**
  * 获取安装/数据根目录
@@ -45,6 +47,7 @@ module.exports = {
   PBKDF2_ITERATIONS,
   VERIFICATION_PLAINTEXT,
   AUTO_LOCK_MINUTES,
+  SESSION_LOCKED_MESSAGE,
   getUserDataRoot,
   getDataDir,
   getDbPath,

@@ -11,6 +11,16 @@ let unlocked = false;
 let lastActivity = Date.now();
 /** @type {NodeJS.Timeout|null} */
 let lockTimer = null;
+/** @type {Array<() => void>} 锁定后的回调（主进程跳转登录页等） */
+const onLockedListeners = [];
+
+/**
+ * 注册会话锁定回调
+ * @param {() => void} listener
+ */
+function onLocked(listener) {
+  onLockedListeners.push(listener);
+}
 
 function isFirstUse() {
   if (!fs.existsSync(getDbPath())) return true;
@@ -66,6 +76,13 @@ function lock() {
   cryptoService.clearMasterKey();
   unlocked = false;
   stopLockTimer();
+  onLockedListeners.forEach((fn) => {
+    try {
+      fn();
+    } catch {
+      // ignore listener errors
+    }
+  });
 }
 
 function isUnlocked() {
@@ -99,4 +116,5 @@ module.exports = {
   lock,
   isUnlocked,
   recordActivity,
+  onLocked,
 };

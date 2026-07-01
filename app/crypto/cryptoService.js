@@ -3,6 +3,7 @@
  * PBKDF2-HMAC-SHA256 + AES-256-GCM，密文格式: [IV 12B][密文+Tag]
  */
 const crypto = require('crypto');
+const { SESSION_LOCKED_MESSAGE } = require('../config');
 
 const IV_LENGTH = 12;
 const SALT_LENGTH = 16;
@@ -77,7 +78,7 @@ function isUnlocked() {
 
 function getMasterKey() {
   if (!masterKey) {
-    throw new Error('主密钥未就绪');
+    throw new Error(SESSION_LOCKED_MESSAGE);
   }
   return masterKey;
 }
