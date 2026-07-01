@@ -70,4 +70,4 @@ npm run build:dir      # 输出未打包目录（调试）
 
 ## 许可证
 
-UNLICENSED — Copyright © 2025 Changjiang
+本项目采用 [MIT License](LICENSE) 开源。
