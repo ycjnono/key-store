@@ -33,7 +33,7 @@ npm start
 build-exe.bat
 ```
 
-输出：`release/KeyStore-1.0.0-Setup.exe`
+输出：`release/KeyStore-1.0.3-Setup.exe`
 
 ## 项目结构（概览）
 

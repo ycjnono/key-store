@@ -1,7 +1,7 @@
 /**
  * Electron 主进程 — 窗口管理、系统托盘与 IPC
  */
-const {app, BrowserWindow, ipcMain, dialog, clipboard, Tray, Menu, nativeImage} = require('electron');
+const {app, BrowserWindow, ipcMain, dialog, clipboard, Tray, Menu, nativeImage, shell} = require('electron');
 const path = require('path');
 const fs = require('fs');
 
@@ -155,6 +155,81 @@ function createTray() {
     tray.on('double-click', showMainWindow);
 }
 
+/**
+ * 设置应用菜单（替换 Electron 默认 Help 菜单）
+ */
+function setAppMenu() {
+    const version = app.getVersion();
+    const repoUrl = 'https://github.com/ycjnono/key-store';
+    const feedbackEmail = 'ycjnono@gmail.com';
+
+    const template = [
+        ...(process.platform === 'darwin'
+            ? [{
+                label: app.name,
+                submenu: [
+                    { role: 'about' },
+                    { type: 'separator' },
+                    { role: 'hide' },
+                    { role: 'hideOthers' },
+                    { role: 'unhide' },
+                    { type: 'separator' },
+                    { role: 'quit' },
+                ],
+            }]
+            : []),
+        { role: 'fileMenu' },
+        { role: 'editMenu' },
+        { role: 'viewMenu' },
+        { role: 'windowMenu' },
+        {
+            role: 'help',
+            submenu: [
+                {
+                    label: '查看版本',
+                    click: async () => {
+                        await dialog.showMessageBox(mainWindow, {
+                            type: 'info',
+                            title: '版本信息',
+                            message: `Key-Store v${version}`,
+                        });
+                    },
+                },
+                {
+                    label: 'GitHub 地址',
+                    click: async () => {
+                        const res = await dialog.showMessageBox(mainWindow, {
+                            type: 'info',
+                            title: 'GitHub',
+                            message: repoUrl,
+                            buttons: ['打开链接', '关闭'],
+                            defaultId: 0,
+                        });
+                        if (res.response === 0) shell.openExternal(repoUrl);
+                    },
+                },
+                {
+                    label: '反馈',
+                    click: async () => {
+                        const mailto = `mailto:${feedbackEmail}`;
+                        const res = await dialog.showMessageBox(mainWindow, {
+                            type: 'info',
+                            title: '反馈',
+                            message: feedbackEmail,
+                            buttons: ['打开邮箱', '复制邮箱', '关闭'],
+                            defaultId: 0,
+                        });
+                        if (res.response === 0) shell.openExternal(mailto);
+                        if (res.response === 1) clipboard.writeText(feedbackEmail);
+                    },
+                },
+            ],
+        },
+    ];
+
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+}
+
 function createWindow() {
     const iconPath = getAppIconPath();
     mainWindow = new BrowserWindow({
@@ -175,10 +250,10 @@ function createWindow() {
     mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
     mainWindow.once('ready-to-show', () => mainWindow.show());
 
-    // 点击标题栏最小化 → 隐藏到托盘
-    mainWindow.on('minimize', (event) => {
-        event.preventDefault();
-        hideToTray();
+    // 点击标题栏最小化 → 正常最小化（不隐藏到托盘）
+    // 托盘仅用于“关闭隐藏”，避免用户误以为最小化=退出/消失
+    mainWindow.on('minimize', () => {
+        // no-op: keep default minimize behavior
     });
 
     // 点击标题栏关闭 → 隐藏到托盘（不退出）
@@ -286,7 +361,9 @@ function registerIpc() {
     });
 
     ipcMain.handle('window:minimize', () => {
-        hideToTray();
+        if (mainWindow && !mainWindow.isDestroyed()) {
+            mainWindow.minimize();
+        }
         return true;
     });
 
@@ -301,6 +378,7 @@ app.whenReady().then(() => {
     if (process.platform === 'win32') {
         app.setAppUserModelId(APP_ID);
     }
+    setAppMenu();
     registerIpc();
     authService.onLocked(navigateToLogin);
     createTray();

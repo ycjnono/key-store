@@ -133,6 +133,9 @@ input:focus, select:focus, textarea:focus {
 
 .category-list li:hover { background: #eff6ff; }
 .category-list li.active { background: var(--primary); color: #fff; }
+.category-list li[draggable="true"] { cursor: grab; }
+.category-list li.dragging { opacity: 0.55; }
+.category-list li.drag-over { outline: 2px dashed rgba(37, 99, 235, 0.6); outline-offset: -2px; }
 
 .content {
   flex: 1;
@@ -161,9 +164,11 @@ input:focus, select:focus, textarea:focus {
   inset: 0;
   background: rgba(15, 23, 42, 0.45);
   display: none;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 1000;
+  overflow-y: auto;
+  padding: 24px 12px;
 }
 
 .modal-overlay.open { display: flex; }
@@ -174,8 +179,7 @@ input:focus, select:focus, textarea:focus {
   padding: 24px;
   max-width: 520px;
   width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
+  overflow: visible;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 

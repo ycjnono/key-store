@@ -1,6 +1,8 @@
-# 构建输出
+# 构建输出（release 安装包需纳入版本库，见下方例外规则）
 node_modules/
-release/
+release/*
+!release/KeyStore-*-Setup.exe
+!release/KeyStore-*-Setup.exe.blockmap
 dist/
 .dist-stale-*/
 release-stale-*/
@@ -22,8 +24,9 @@ logs/
 Thumbs.db
 *.log
 
-# 打包临时文件
+# 打包临时文件（release 安装包除外，见上方 ! 规则）
 *.exe
+!release/KeyStore-*-Setup.exe
 *.msi
 dist/
 .dist-stale-*/

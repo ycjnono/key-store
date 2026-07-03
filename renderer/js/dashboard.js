@@ -47,6 +47,18 @@
     return a.port ? `${a.address}:${a.port}` : a.address;
   }
 
+  async function persistCategorySort(nextCategories) {
+    // sort_order 从 1 开始，尽量只更新发生变化的项
+    const updates = [];
+    nextCategories.forEach((c, idx) => {
+      const nextSort = idx + 1;
+      if (c.sort_order !== nextSort) {
+        updates.push(api(window.keystore.category.update(c.id, c.name, c.icon, nextSort)));
+      }
+    });
+    if (updates.length) await Promise.all(updates);
+  }
+
   async function loadCategories() {
     categories = await api(window.keystore.category.list());
     const ul = $('categoryList');
@@ -55,6 +67,7 @@
       const li = document.createElement('li');
       li.textContent = c.name;
       li.dataset.id = c.id;
+      li.draggable = true;
       if (c.id === selectedCategoryId) li.classList.add('active');
       li.onclick = () => {
         selectedCategoryId = c.id;
@@ -62,6 +75,47 @@
         $('searchInput').value = '';
         loadCategories();
         loadAccounts();
+      };
+
+      li.ondragstart = (e) => {
+        li.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', String(c.id));
+      };
+      li.ondragend = () => {
+        li.classList.remove('dragging');
+        ul.querySelectorAll('li.drag-over').forEach((n) => n.classList.remove('drag-over'));
+      };
+      li.ondragover = (e) => {
+        e.preventDefault();
+        li.classList.add('drag-over');
+        e.dataTransfer.dropEffect = 'move';
+      };
+      li.ondragleave = () => {
+        li.classList.remove('drag-over');
+      };
+      li.ondrop = async (e) => {
+        e.preventDefault();
+        li.classList.remove('drag-over');
+        const fromId = Number(e.dataTransfer.getData('text/plain'));
+        const toId = Number(li.dataset.id);
+        if (!fromId || !toId || fromId === toId) return;
+
+        const fromIdx = categories.findIndex((x) => x.id === fromId);
+        const toIdx = categories.findIndex((x) => x.id === toId);
+        if (fromIdx < 0 || toIdx < 0) return;
+
+        const next = categories.slice();
+        const [moved] = next.splice(fromIdx, 1);
+        next.splice(toIdx, 0, moved);
+
+        try {
+          await persistCategorySort(next);
+          categories = await api(window.keystore.category.list());
+          await loadCategories();
+        } catch (err) {
+          alert(`分类排序保存失败：${err.message}`);
+        }
       };
       ul.appendChild(li);
     });
@@ -233,7 +287,6 @@
     $('accPort').value = '';
     $('accUsername').value = '';
     $('accPassword').placeholder = '必填';
-    $('accValidFrom').value = '';
     $('accValidTo').value = '';
     $('accNotes').value = '';
 
@@ -244,7 +297,6 @@
       $('accAddress').value = a.address || '';
       $('accPort').value = a.port || '';
       $('accUsername').value = a.username || '';
-      $('accValidFrom').value = a.valid_from ? a.valid_from.slice(0, 10) : '';
       $('accValidTo').value = a.valid_to ? a.valid_to.slice(0, 10) : '';
       $('accNotes').value = a.notes || '';
       try {
@@ -255,6 +307,10 @@
         alert(`无法读取账户密码：${err.message}`);
       }
     } else {
+      // 新增：默认选择当前左侧选中的分类
+      if (selectedCategoryId) {
+        sel.value = String(selectedCategoryId);
+      }
       resetPasswordField('', true);
     }
     openModal('accountModal');
@@ -268,7 +324,6 @@
       port: $('accPort').value ? Number($('accPort').value) : null,
       username: $('accUsername').value.trim() || null,
       password: accountPasswordPlain,
-      validFrom: $('accValidFrom').value ? $('accValidFrom').value + 'T00:00:00' : null,
       validTo: $('accValidTo').value ? $('accValidTo').value + 'T00:00:00' : null,
       notes: $('accNotes').value.trim() || null,
     };
